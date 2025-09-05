@@ -1,1 +1,120 @@
-Hallo
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Wars Abstimmung</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #f0f0f0;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      background-color: #000;
+      color: #fff;
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    .barContainer {
+      margin: 10px 0;
+      background-color: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+      width: 300px;
+      height: 25px;
+      display: inline-block;
+    }
+    .bar {
+      height: 100%;
+      text-align: right;
+      padding-right: 5px;
+      line-height: 25px;
+      color: white;
+      font-weight: bold;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Star Wars Abstimmung</h1>
+  <button id="voteBtn">Abstimmen</button>
+
+  <div id="voteArea" style="display:none;">
+    <p>Wähle deinen Lieblingscharakter:</p>
+    <select id="characterSelect">
+      <option value="Luke Skywalker">Luke Skywalker</option>
+      <option value="Darth Vader">Darth Vader</option>
+      <option value="Leia Organa">Leia Organa</option>
+      <option value="Yoda">Yoda</option>
+      <option value="Han Solo">Han Solo</option>
+    </select>
+    <br><br>
+    <button onclick="submitVote()">Abstimmen!</button>
+  </div>
+
+  <p id="thankYou" style="margin-top:20px; font-weight:bold;"></p>
+  <div id="resultsList"></div>
+
+  <script>
+    const voteBtn = document.getElementById('voteBtn');
+    const voteArea = document.getElementById('voteArea');
+    const thankYou = document.getElementById('thankYou');
+    const resultsList = document.getElementById('resultsList');
+
+    const votes = {
+      "Luke Skywalker": 0,
+      "Darth Vader": 0,
+      "Leia Organa": 0,
+      "Yoda": 0,
+      "Han Solo": 0
+    };
+
+    const colors = {
+      "Luke Skywalker": "#4CAF50",
+      "Darth Vader": "#f44336",
+      "Leia Organa": "#2196F3",
+      "Yoda": "#FFC107",
+      "Han Solo": "#9C27B0"
+    };
+
+    voteBtn.addEventListener('click', () => {
+      voteArea.style.display = 'block';
+      thankYou.textContent = '';
+    });
+
+    function submitVote() {
+      const character = document.getElementById('characterSelect').value;
+      votes[character]++;
+      thankYou.textContent = `Danke für deine Stimme für ${character}!`;
+      voteArea.style.display = 'none';
+      displayResults();
+    }
+
+    function displayResults() {
+      let resultsHTML = '<h3>Aktuelle Abstimmungsergebnisse:</h3>';
+      for (let char in votes) {
+        const voteCount = votes[char];
+        resultsHTML += `
+          <div>${char}: ${voteCount} Stimmen</div>
+          <div class="barContainer">
+            <div class="bar" style="width:${voteCount * 20}px; background-color:${colors[char]}">${voteCount}</div>
+          </div>
+        `;
+      }
+      resultsList.innerHTML = resultsHTML;
+    }
+  </script>
+
+</body>
+</html>
